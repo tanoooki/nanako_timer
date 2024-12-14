@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contagem Regressiva de 6 Meses</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #fff0f5;
+        background-image: linear-gradient(
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.5)
+          ),
+          url("./src/img/bg.jpg");
+        color: #ec7397;
+      }
+      .countdown {
+        background-color: #fff;
+        border: 2px solid #ffc0cb;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 5px 10px 1px rgba(255, 192, 203, 0.3);
+        position: relative;
+        margin: 0px 10px;
+      }
+      .countdown::before {
+        content: "";
+        background-image: url("./src/img/original_willy-pillow-removebg-preview.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 60px;
+        height: 60px;
+        display: inline-block;
+        margin-right: 10px;
+        vertical-align: middle;
+        position: absolute;
+        top: -48px;
+        right: -15px;
+      }
+      .countdown span {
+        font-size: 30px;
+        font-weight: bold;
+        margin: 0 10px;
+        color: #dd608a;
+      }
+      @media (max-width: 768px) {
+        .countdown {
+          padding: 1em;
+        }
+        .countdown span {
+          font-size: 1.2rem; /* Reduz o tamanho da fonte em telas menores */
+        }
+        .countdown::before {
+          width: 50px;
+          height: 50px;
+          top: -40px
+        }
+      }
+      @media (max-width: 480px) {
+        .countdown {
+          padding: 0.8em;
+        }
+        .countdown span {
+          font-size: 1rem; /* Ajusta ainda mais o tamanho da fonte em telas muito pequenas */
+        }
+        .countdown::before {
+          width: 40px;
+          height: 40px;
+          top: -32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="countdown">
+      <p>Contagem regressiva até o dia: <span id="timer"></span></p>
+      <div>
+        <span id="months"></span> meses <span id="days"></span> dias
+        <span id="hours"></span> horas <span id="minutes"></span> minutos
+        <span id="seconds"></span> segundos
+      </div>
+    </div>
+
+    <script>
+      // Função para calcular a contagem regressiva
+      function updateCountdown() {
+        // Data e hora alvo (6 meses a partir de agora às 10:00)
+        let targetDate = new Date();
+        targetDate.setHours(10, 0, 0, 0); // Definindo para 10:00
+        targetDate.setMonth(targetDate.getMonth() + 6); // Adicionando 6 meses
+
+        // Data atual
+        let now = new Date();
+
+        // Calculando a diferença em milissegundos
+        let timeRemaining = targetDate - now;
+
+        // Calculando meses, dias, horas, minutos e segundos
+        let months = Math.floor(timeRemaining / (1000 * 60 * 60 * 24 * 30));
+        let days = Math.floor(
+          (timeRemaining % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)
+        );
+        let hours = Math.floor(
+          (timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        let minutes = Math.floor(
+          (timeRemaining % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+        // Atualizando o HTML com os valores calculados
+        document.getElementById("months").textContent = months;
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+        document.getElementById("minutes").textContent = minutes;
+        document.getElementById("seconds").textContent = seconds;
+
+        // Exibir o timer
+        document.getElementById("timer").textContent =
+          targetDate.toLocaleString();
+
+        // Se o timer chegou a zero, exibir uma mensagem
+        if (timeRemaining <= 0) {
+          document.getElementById("timer").textContent =
+            "A contagem chegou ao fim!";
+          clearInterval(countdownInterval); // Para o timer
+        }
+      }
+
+      // Atualizar a contagem regressiva a cada segundo
+      let countdownInterval = setInterval(updateCountdown, 1000);
+
+      // Chamar a função uma vez para inicializar
+      updateCountdown();
+    </script>
+  </body>
+</html>
